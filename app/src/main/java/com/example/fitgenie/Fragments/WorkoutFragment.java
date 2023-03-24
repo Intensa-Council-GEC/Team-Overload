@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -55,6 +56,7 @@ public class WorkoutFragment extends Fragment {
     public Home home;
     CardView workout_plan, check_form;
     static List<User> userList;
+    TextView result;
     ArrayList<Object> key = new ArrayList<Object>();
     long value;
     String url = "http://192.168.198:5000/predict";
@@ -144,49 +146,58 @@ public class WorkoutFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
-//                        new Response.Listener<String>() {
-//                            @Override
-//                            public void onResponse(String response) {
-//                                try {
-//                                    JSONObject jsonObject = new JSONObject(response);
-////                                    String res = jsonObject.getString("placement");
-////                                    if(res.equals("1"))
-////                                    {
-////                                        result.setText("Placement is done!");
-////                                    }
-////                                    else
-////                                    {
-////                                        result.setText("Placement is ot done!");
-////                                    }
-//                                } catch (JSONException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        },
-//                        new Response.ErrorListener() {
-//                            @Override
-//                            public void onErrorResponse(VolleyError error) {
-//                                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }){
-//                    //params to be passed (gpa, id, profile_score)
-//                    @Override
-//                    protected Map<String, String> getParams()
-//                    {
-//                        Map<String, String> params = new HashMap<String, String>();
-//                        params.put("gender", home.gender);
-//                        params.put("goal", home.goal);
-//                        params.put("type", home.wtype);
-//                        params.put("level", home.level);
-//
-//                        return params;
-//                    }
-//                };
-//                RequestQueue queue = Volley.newRequestQueue(getContext());
-//                queue.add(stringRequest);
-//                Intent intent = new Intent(getContext(), WorkoutPlan.class);
-//                startActivity(intent);
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response);
+                                    String res = jsonObject.getString("placement");
+                                    if(res.equals("1"))
+                                    {
+                                        result.setText("Workout plan");
+                                        String [] ex = new String[5];
+                                        String [] src = new String[5];
+                                        String [] desc = new String[5];
+                                        for(int i=0;i<5;i++)
+                                        {
+                                            ex[i] = jsonObject.getString("exercise"+i);
+                                            src[i] = jsonObject.getString("source"+i);
+                                            desc[i] = jsonObject.getString("description"+i);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        result.setText("Choose atleast one field");
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }){
+                    //params to be passed (gpa, id, profile_score)
+                    @Override
+                    protected Map<String, String> getParams()
+                    {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("gender", home.gender);
+                        params.put("goal", home.goal);
+                        params.put("type", home.wtype);
+                        params.put("level", home.level);
+
+                        return params;
+                    }
+                };
+                RequestQueue queue = Volley.newRequestQueue(getContext());
+                queue.add(stringRequest);
+                Intent intent = new Intent(getContext(), WorkoutPlan.class);
+                startActivity(intent);
                 home.replacefragment(new WorkoutPlan());
 
             }

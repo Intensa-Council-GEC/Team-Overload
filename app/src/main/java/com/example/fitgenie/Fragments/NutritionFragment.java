@@ -11,10 +11,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import com.example.fitgenie.Home;
+import com.example.fitgenie.Message;
+import com.example.fitgenie.MessageAdapter;
 import com.example.fitgenie.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +42,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 public class NutritionFragment extends Fragment {
     FloatingActionButton assistant;
     public Home home;
+    String goal, diet, allergies;
+    int days;
     WebView webView;
+    List<Message> messageList;
+    MessageAdapter messageAdapter;
+    public static final MediaType JSON
+            = MediaType.get("application/json; charset=utf-8");
+    OkHttpClient client = new OkHttpClient();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -77,6 +102,54 @@ public class NutritionFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        messageList.add(new Message("Typing... ", Message.SENT_BY_BOT));
+
+        JSONObject jsonBody = new JSONObject();
+        try {
+            jsonBody.put("diet",diet);
+            jsonBody.put("goal",goal);
+            jsonBody.put("days", days);
+            jsonBody.put("allergies",allergies);
+            jsonBody.put("max_tokens", 4000);
+            jsonBody.put("temperature", 0);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        RequestBody body = RequestBody.create(jsonBody.toString(), JSON);
+        Request request = new Request.Builder()
+                .url("https://api.openai.com/v1/completions")
+                .header("Authorization", "Bearer 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")
+                .post(body)
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                addResponse("Failed to load response due to "+e.getMessage());
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if(response.isSuccessful())
+                {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.body().string());
+                        JSONArray jsonArray = jsonObject.getJSONArray("choices");
+                        String result = jsonArray.getJSONObject(0).getString("text");
+                        addResponse(result.trim());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                else
+                {
+                    addResponse("Failed to load response due to "+response.body().toString()+"!");
+                }
+            }
+        });
+
         home = (Home) getActivity();
         assistant = view.findViewById(R.id.assistant);
         home.toolbar.setVisibility(View.INVISIBLE);
@@ -89,5 +162,9 @@ public class NutritionFragment extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
 
+    }
+    void addResponse(String msg)
+    {
+        Toast.makeText(home, msg, Toast.LENGTH_SHORT).show();
     }
 }
