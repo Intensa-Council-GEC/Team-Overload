@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#393e46"
+    tools:context=".Fragments.AssistantFragment">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/recycler_view"
+        android:layout_above="@id/bottom_layout">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/welcome_text"
+        android:layout_centerInParent="true"
+        android:text="Welcome to Android ChatGPT\nTry it out now!"
+        android:gravity="center"
+        android:textSize="28dp">
+    </TextView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/bottom_layout"
+        android:padding="8dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/message_edit_text"
+            android:layout_centerInParent="true"
+            android:hint="Write here"
+            android:padding="16dp"
+            android:layout_toLeftOf="@id/send_button"
+            android:background="@drawable/rounded_corner">
+        </EditText>
+        <ImageButton
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:id="@+id/send_button"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginStart="10dp"
+            android:padding="8dp"
+            android:src="@drawable/send"
+            android:background="?attr/selectableItemBackgroundBorderless">
+        </ImageButton>
+
+    </RelativeLayout>
+
+</RelativeLayout>

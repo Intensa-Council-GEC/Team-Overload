@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "105449261137",
+    "project_id": "fitgenie-627bd",
+    "storage_bucket": "fitgenie-627bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:105449261137:android:a173e9836fca27cd591070",
+        "android_client_info": {
+          "package_name": "com.example.fitgenie"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "105449261137-es9f1tlkue9lsg08nc0cvmud6nghu9em.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXSuYblllwbnLKB9ginkkxp76KRuQR8qw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "105449261137-es9f1tlkue9lsg08nc0cvmud6nghu9em.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

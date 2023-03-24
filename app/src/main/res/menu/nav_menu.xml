@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="Workout"
+        android:icon="@drawable/workout"
+        android:id="@+id/workout"/>
+    <item android:title="Nutrition"
+        android:icon="@drawable/nutrition"
+        android:id="@+id/nutrition"/>
+    <item android:title="Social"
+        android:icon="@drawable/social"
+        android:id="@+id/assistant"/>
+    <item android:title="Progress"
+        android:icon="@drawable/stats"
+        android:id="@+id/stats"/>
+</menu>
